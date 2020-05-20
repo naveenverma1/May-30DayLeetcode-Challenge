@@ -1,0 +1,74 @@
+ Find All Anagrams in a String
+
+Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+
+Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
+
+The order of output does not matter.
+
+Example 1:
+
+Input:
+s: "cbaebabacd" p: "abc"
+
+Output:
+[0, 6]
+
+Explanation:
+The substring with start index = 0 is "cba", which is an anagram of "abc".
+The substring with start index = 6 is "bac", which is an anagram of "abc".
+Example 2:
+
+Input:
+s: "abab" p: "ab"
+
+Output:
+[0, 1, 2]
+
+Explanation:
+The substring with start index = 0 is "ab", which is an anagram of "ab".
+The substring with start index = 1 is "ba", which is an anagram of "ab".
+The substring with start index = 2 is "ab", which is an anagram of "ab".
+
+Solution
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        int start = 0;
+        int end = p.length()-1;
+        int length = s.length();
+         List<Integer> list = new ArrayList();
+        if(p.length()>s.length()||start>end) return list;
+       
+        Map<Character,Integer> hp = new HashMap<>();
+         Map<Character,Integer> hs = new HashMap<>();
+        
+        for(int i =0;i<p.length();i++){
+            hp.put(p.charAt(i),hp.getOrDefault(p.charAt(i),0)+1);
+            
+        }
+        for(int i =0;i<=end;i++){
+            hs.put(s.charAt(i),hs.getOrDefault(s.charAt(i),0)+1);
+            
+        }
+        if(hs.equals(hp)) list.add(start);
+        start++;end++;
+        while(end<length){
+            char a = s.charAt(end);
+            hs.put(a,hs.getOrDefault(a,0)+1);
+            
+            char b = s.charAt(start-1);
+            if(hs.containsKey(b)){
+                hs.put(b,hs.get(b)-1);
+            }
+            if(hs.get(b)==0){
+                hs.remove(b);
+            }
+              if(hs.equals(hp)) list.add(start);
+            start++;end++;
+           
+        }
+        return list;
+    }
+}
+
